@@ -1,6 +1,6 @@
 export const environment = {
     production: false,
-    URL: 'http://localhost:8086',
+    URL: 'http://localhost:8008',
     // SOCK_URL: 'http://rotoflux.io:4300',
     // username: 'rotomag',
     // password: 'mqtt_rotomag',

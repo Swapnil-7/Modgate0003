@@ -20,7 +20,7 @@ import { ServerSettingComponent } from './Components/server-setting/server-setti
 import { SensorComponent } from './Components/sensor/sensor.component';
 import { DeviceConfigurationComponent } from './Components/device-configuration/device-configuration.component';
 import { ConfigurationComponent } from './Components/configuration/configuration.component';
-import { LoraSettingComponent } from './Components/lora-setting/lora-setting.component';
+
 
 @NgModule({
    declarations: [
@@ -38,7 +38,7 @@ import { LoraSettingComponent } from './Components/lora-setting/lora-setting.com
     SensorComponent,
     DeviceConfigurationComponent,
     ConfigurationComponent,
-    LoraSettingComponent,
+   
   ],
   imports: [
     BrowserModule,
