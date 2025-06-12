@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Subject } from 'rxjs';
 import { DeviceService } from 'src/app/Services/device.service';
 
 @Component({
@@ -8,10 +9,12 @@ import { DeviceService } from 'src/app/Services/device.service';
   styleUrls: ['./general.component.css']
 })
 export class GeneralComponent {
-
-  formData: any;
+formData: any;
   updatedFormData: any;
   updatedFormField: any;
+  spinnerVisible = false;
+  
+    private unsubscriber = new Subject<void>();
 
   configForm = new FormGroup({
     hostname: new FormControl(''),
@@ -25,24 +28,33 @@ export class GeneralComponent {
     logsend: new FormControl(), // Add logSending control
     // browserTime: new FormControl(''), // Add browserTime control
   });
-  constructor(private deviceService: DeviceService) { }
+  constructor(private deviceService: DeviceService) {
+    
+   }
 
 
   ngOnInit(): void {
     this.getGeneral();
+     
+   
   }
 
   // getting value from Device service of getGnConfig meyhod
   getGeneral() {
+    this.spinnerVisible = true; 
+      //  setTimeout(() => {
     this.deviceService.getGnConfig().subscribe((result:any) => {
       console.log('GET GENERAL', result);
       this.configForm.patchValue(result);
       this.formData = result;
+      this.spinnerVisible = false;
       // console.log(this.formData);
     }, (err:any) => {
       console.error(err.message);
       alert('An error Occured While fetching data');
+      this.spinnerVisible = false;
     });
+    // }, 2000);
   }
   
   // to handle yes or no checkbox
@@ -68,5 +80,4 @@ export class GeneralComponent {
       alert('An error Occured While Update General Configuration Setting');
     });
   }
-
 }

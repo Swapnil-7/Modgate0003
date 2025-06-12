@@ -13,6 +13,8 @@ export class SerialCommandComponent {
   formData: any;
   updatedFormData: any;
   updatedFormField: any;
+  // spinnerVisible = false;
+  isLoading = false;
   CommandForm = new FormGroup({
   command: new FormControl(''),
 
@@ -35,20 +37,27 @@ export class SerialCommandComponent {
 
 
   saveCommand() {
+  this.isLoading = true;
+  //  this.spinnerVisible = true;
     this.deviceService.setCommand({ cmd: this.CommandForm.value.command }).subscribe((result: any) => {
       this.formData = result;
       console.log("Command sent:", { cmd: this.CommandForm.value.command }); // Print the command value
       console.log(result);
 
       if (result.sts === true) {
+        
+      // this.spinnerVisible = false;
         alert('Command Update Successfully');
-        // this.router.navigate(['home/status']);
+        this.isLoading = false;
+      
       } else {
         alert('Failed to update Command');
       }
     }, (err:any) => {
       console.error(err.message);
       alert("An error Occured While Update command");
+        this.isLoading = false;
+      // this.spinnerVisible = false;
     });
 
 

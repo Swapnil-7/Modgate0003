@@ -1,74 +1,80 @@
-<div class="container mx-auto">
-    <div class="flex flex-col flex-auto min-w-0">
-        <div class="flex-auto p-2 sm:p-10">
-            <!-- Title -->
-            <div class="title text-center mb-4">
-                <span class="heading text-3xl font-bold">SERVER SETTING</span>
-                <br>
-                <span class="subheading text-lg text-gray-600">Server Configuration Values</span>
-            </div>
-            <hr class="border-gray-300 my-4">
-            
-            <!-- Form -->
-            <form [formGroup]="serverForm" class="max-w-lg">
-                <div class="grid grid-cols-1 gap-4">
-                    <!-- Hostname -->
-                    <div class="flex items-center">
-                        <label for="serverIP" class="block text-gray-700 text-base font-semibold w-1/3">Server IP :</label>
-                        <input
-                            type="text"
-                            id="serverIP"
-                            placeholder="Enter  ServerIP"
-                            class="bg-gray-200 border-0 rounded-lg px-3 py-2 w-full focus:ring-teal-600 focus:border-teal-600"
-                            formControlName="serverIP"
-                        />
-                    </div>
+<div class="container mx-auto px-4 py-6">
+  <div class="flex flex-col min-w-0">
+    <div class="flex-auto p-2 sm:p-6 md:p-10">
+      <!-- Title -->
+      <div class="text-center mb-6">
+        <span class="text-2xl sm:text-3xl font-bold">SERVER SETTING</span>
+        <br />
+        <span class="text-sm sm:text-lg text-gray-600">Server Configuration Values</span>
+      </div>
 
-                    <!-- Latitude -->
-                    <div class="flex items-center">
-                        <label for="port" class="block text-gray-700 text-base font-semibold w-1/3">Port :</label>
-                        <input
-                            type="text"
-                            id="port"
-                            class="bg-gray-200 border-0 rounded-lg px-3 py-2 w-full focus:ring-teal-600 focus:border-teal-600"
-                            formControlName="port"
-                        />
-                    </div>
+      <hr class="border-gray-300 my-6" />
 
-                    <!-- Longitude -->
-                    <div class="flex items-center">
-                        <label for="serverURL" class="block text-gray-700 text-base font-semibold w-1/3">Server URL :</label>
-                        <input
-                            type="text"
-                            id="serverURL"
-                            class="bg-gray-200 border-0 rounded-lg px-3 py-2 w-full focus:ring-teal-600 focus:border-teal-600"
-                            formControlName="serverURL"
-                        />
-                    </div>
-
-                    <!-- Site Name -->
-                    <div class="flex items-center">
-                        <label for="token" class="block text-gray-700 text-base font-semibold w-1/3">Token :</label>
-                        <input
-                            type="text"
-                            id="token"
-                            class="bg-gray-200 border-0 rounded-lg px-3 py-2 w-full focus:ring-teal-600 focus:border-teal-600"
-                            formControlName="token"
-                        />
-                    </div>
-                    <!-- Submit button -->
-                    <div class="flex items-center justify-center">
-                        <div class="w-1/3"></div> <!-- Empty space for alignment -->
-                        <input
-                            type="submit"
-                            class="submitbtn bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-10 rounded-xl focus:outline-none focus:shadow-outline"
-                            value="Submit" 
-                           
-                        />
-                    </div>
-                </div>
-            </form>
+      <!-- Form -->
+      <form [formGroup]="serverForm" (ngSubmit)="updateServer()" class="max-w-xl mx-auto space-y-4">
+        <!-- Server IP -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center">
+          <label for="serverIP" class="sm:w-1/3 mb-1 sm:mb-0 text-gray-700 font-semibold ">Server IP :</label>
+          <input
+            id="serverIP"
+            type="text"
+            placeholder="Enter Server IP"
+            class="w-full sm:w-2/4 bg-gray-200 rounded-lg px-3 py-2 focus:ring-teal-600 focus:outline-none"
+            formControlName="serverIP"
+          />
         </div>
-    </div>
-</div>
 
+        <!-- Port -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center">
+          <label for="port" class="sm:w-1/3 mb-1 sm:mb-0 text-gray-700 font-semibold ">Port :</label>
+          <input
+            id="port"
+            type="text"
+            class="w-full sm:w-2/4 bg-gray-200 rounded-lg px-3 py-2 focus:ring-teal-600 focus:outline-none"
+            formControlName="port"
+          />
+        </div>
+
+        <!-- Server URL -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center">
+          <label for="serverURL" class="sm:w-1/3 mb-1 sm:mb-0 text-gray-700 font-semibold ">Server URL :</label>
+          <input
+            id="serverURL"
+            type="text"
+            class="w-full sm:w-2/4 bg-gray-200 rounded-lg px-3 py-2 focus:ring-teal-600 focus:outline-none"
+            formControlName="serverURL"
+          />
+        </div>
+
+        <!-- Token -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center">
+          <label for="token" class="sm:w-1/3 mb-1 sm:mb-0 text-gray-700 font-semibold ">Token :</label>
+          <input
+            id="token"
+            type="text"
+            class="w-full sm:w-2/4 bg-gray-200 rounded-lg px-3 py-2 focus:ring-teal-600 focus:outline-none"
+            formControlName="token"
+          />
+        </div>
+       <hr class="border-gray-300 my-6" />
+        <!-- Submit Button -->
+        <div class="flex justify-center">
+          <button
+            type="submit"
+            class="bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-10 rounded-xl focus:outline-none focus:ring focus:ring-teal-300"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+   
+    <!-- Spinner Overlay -->
+    <div
+      class="spinner-overlay fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50"
+      *ngIf="spinnerVisible"
+    >
+      <div class="spinner border-t-4 border-b-2  border-blue-600 rounded-full w-14 h-14 animate-spin"></div>
+    </div>
+  </div>
+</div>

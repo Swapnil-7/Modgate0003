@@ -11,6 +11,7 @@ import { DeviceService } from 'src/app/Services/device.service';
 export class DeviceConfigurationComponent {
 
   formData: any;
+  spinnerVisible = false;
   deviceConfigForm = new FormGroup({
     urate: new FormControl(),
     modaddr: new FormControl(),
@@ -29,14 +30,19 @@ export class DeviceConfigurationComponent {
 
   getDeviceConf() {
     // Fetch initial configuration from the server if not found in localStorage
+    this.spinnerVisible=true;
+    //  setTimeout(() => {
     this.deviceService.getDeviceConfig().subscribe((result: any) => {
       console.log("GET Device-Configuration", result);
       this.deviceConfigForm.patchValue(result);
       this.formData = result;
+      this.spinnerVisible=false;
     }, (err:any) => {
       console.error(err.message);
       alert("An error Occured While fetching data");
+      this.spinnerVisible=false;
     });
+  // },2000);
   }
 
   saveDeviceConfig() {

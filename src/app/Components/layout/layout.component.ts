@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 import { DeviceService } from 'src/app/Services/device.service';
 
 @Component({
@@ -13,7 +14,9 @@ export class LayoutComponent {
   isSidebarOpen: boolean = true;
   deviceStatus: any;
   hostname: any;
-
+ deviceName: string | null = null;
+  firmwareVersion: string | null = null;
+  private unsubscriber = new Subject<void>();
   
 
   constructor(private router: Router, private dev: DeviceService,){
@@ -22,6 +25,14 @@ export class LayoutComponent {
         this.activeRoute = event.urlAfterRedirects;
       }
     });
+    this.dev.deviceName$
+  .pipe(takeUntil(this.unsubscriber))
+  .subscribe(name => this.deviceName = name);
+
+this.dev.firmwareVersion$
+  .pipe(takeUntil(this.unsubscriber))
+  .subscribe(version => this.firmwareVersion = version);
+    this.checkScreenSize();
     this.checkScreenSize();
   }
 
@@ -76,7 +87,7 @@ export class LayoutComponent {
   }
 
   logout() {
-    // this.loginService.logout();
+    this.dev.clearStoredValues();
     this.router.navigate(['/login']);
   }
 
@@ -126,5 +137,10 @@ export class LayoutComponent {
       }
     );
   }
+
+  ngOnDestroy(): void {
+  this.unsubscriber.next();
+  this.unsubscriber.complete();
+}
 
 }

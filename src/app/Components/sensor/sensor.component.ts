@@ -10,7 +10,8 @@ import { DeviceService } from 'src/app/Services/device.service';
 })
 export class SensorComponent {
 
-  formData: any;
+ formData: any;
+  spinnerVisible = false;
   sensorForm = new FormGroup({
     tempslop: new FormControl( ),
     tempconst: new FormControl( ),
@@ -34,14 +35,17 @@ export class SensorComponent {
   }
 
   getSensorSet() {
+    this.spinnerVisible=true;
     // Fetch initial configuration from the server if not found in localStorage
     this.deviceService.getSensor().subscribe((result: any) => {
       console.log("GET Sensor-Calibration", result);
       this.sensorForm.patchValue(result);
       this.formData = result;
+      this.spinnerVisible=false;
     }, (err:any) => {
       console.error(err.message);
       alert("An error Occured While fetching data");
+      this.spinnerVisible=false;
     });
 
 

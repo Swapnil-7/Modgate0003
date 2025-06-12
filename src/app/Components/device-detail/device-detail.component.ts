@@ -10,33 +10,44 @@ import { DeviceService } from 'src/app/Services/device.service';
 export class DeviceDetailComponent {
 
   deviceStatus: any;
-  constructor( private deviceService: DeviceService) {
+  spinnerVisible = false; // <-- add this
 
-  }
-
-  
   private unsubscriber: Subject<void> = new Subject<void>();
+
+  constructor(private deviceService: DeviceService) {}
+
   ngOnInit() {
-    this.getDeviceStatus();          
+    this.getDeviceStatus();
   }
 
   getDeviceStatus(): void {
-    console.log("Status page")
-    this.deviceService.getStatus().subscribe((result: any) => {
-      console.log(result);// sts:true
-      this.deviceStatus = result;
-      // this.hostname.setHostname(result);
-     
-     
-      // this.deviceStatus = Object.entries(result).map(([key, value]) => ({ key, value }));
-      // console.log("Device status", typeof this.deviceStatus);
+    console.log("Status page");
+    this.spinnerVisible = true; // Show spinner before API call
+    // setTimeout(() => {
+      
+   
+    this.deviceService.getStatus().subscribe(
+      (result: any) => {
+        this.deviceStatus = result;
 
+        if (result?.Device) {
+          this.deviceService.setDeviceName(result.Device);
+        }
 
-    }, (error:any) => {
-      console.error('Error fetching status data:', error);
-      alert("An error Occured While fetching status data");
-    })
+        if (result?.FirmwareVersion) {
+          this.deviceService.setFirmwareVersion(result.FirmwareVersion);
+        }
 
+        this.spinnerVisible = false; // Hide spinner after success
+      },
+      (error: any) => {
+        console.error('Error fetching status data:', error);
+        alert("An error Occurred While fetching status data");
+        this.spinnerVisible = false; // Hide spinner on error too
+      }
+    );
+
+    //  }, 2000);
 
   }
 

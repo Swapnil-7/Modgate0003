@@ -9,10 +9,10 @@ import { DeviceService } from 'src/app/Services/device.service';
   styleUrls: ['./mqtt.component.css']
 })
 export class MqttComponent {
-
-  formData: any;
+ formData: any;
   updatedFormData: any;
   updatedFormField: any;
+   spinnerVisible = false;
   constructor(private http: HttpClient, private deviceService: DeviceService) {
 
   }
@@ -73,17 +73,22 @@ export class MqttComponent {
   }
 
   getMqtt() {
+    this.spinnerVisible=true;
+    // setTimeout(() => {
     this.deviceService.getMqtt().subscribe((result: any) => {
       console.log("GET Mqtt", result);
       this.mqttForm.patchValue(result);
       this.formData = result;
+      this.spinnerVisible=false;
       // console.log(this.formData);
 
       // console.log(this.formData.retain);
     }, (err:any) => {
       console.error(err.message);
       alert("An error Occured While fetching data");
+       this.spinnerVisible=false;
     });
+    // }, 2000);
   }
 
   handleRetainChange() {
@@ -142,6 +147,8 @@ export class MqttComponent {
   ngOnDestroy(): void {
 
   }
+
+
 
 
 

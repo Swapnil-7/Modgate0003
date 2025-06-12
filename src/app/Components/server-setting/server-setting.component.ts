@@ -10,10 +10,11 @@ import { DeviceService } from 'src/app/Services/device.service';
 })
 export class ServerSettingComponent {
 
+  spinnerVisible = false;
   formData: any;
   serverForm = new FormGroup({
     serverIP: new FormControl(''),
-    port: new FormControl(0),
+    port: new FormControl(),
     serverURL: new FormControl(''),
     token: new FormControl(''),
   })
@@ -26,15 +27,20 @@ export class ServerSettingComponent {
   }
   getServer() {
     // Fetch initial configuration from the server if not found in localStorage
+     this.spinnerVisible = true; 
+    //  setTimeout(() => {
     this.deviceService.getServerSetting().subscribe((result: any) => {
       console.log("GET Server-Setting", result);
       this.serverForm.patchValue(result);
       this.formData = result;
+      this.spinnerVisible = false;
       // console.log(this.formData);
     }, (err:any) => {
       console.error(err.message);
       alert("An error Occured While fetching data");
+       this.spinnerVisible = false;
     });
+  // },2000);
 
   }
 

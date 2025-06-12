@@ -11,6 +11,13 @@ export class DeviceService {
   private variableSubject = new BehaviorSubject<boolean>(false); // Replace 'string' with the actual type of your variable
   variable$: Observable<boolean> = this.variableSubject.asObservable();
 
+  private _deviceName$ = new BehaviorSubject<string>(localStorage.getItem('deviceName') || '');
+  private _firmwareVersion$ = new BehaviorSubject<string>(localStorage.getItem('firmwareVersion') || '');
+
+  deviceName$ = this._deviceName$.asObservable();
+  firmwareVersion$ = this._firmwareVersion$.asObservable();
+
+
   constructor(private http: HttpClient, private router: Router) { }
 
 
@@ -41,6 +48,23 @@ export class DeviceService {
 
   getStatus() {
     return this.http.get(`${environment.URL}/api/status`);
+  }
+
+  setDeviceName(name: string) {
+    localStorage.setItem('deviceName', name);
+    this._deviceName$.next(name);
+  }
+
+  setFirmwareVersion(version: string) {
+    localStorage.setItem('firmwareVersion', version);
+    this._firmwareVersion$.next(version);
+  }
+
+  clearStoredValues() {
+    localStorage.removeItem('deviceName');
+    localStorage.removeItem('firmwareVersion');
+    this._deviceName$.next('');
+    this._firmwareVersion$.next('');
   }
 
   getServerSetting() {
